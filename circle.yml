@@ -1,0 +1,35 @@
+machine:
+  services:
+    - docker
+
+# this step edits timestamps in .git repos to avoid rebuilding everytime
+checkout:
+  post:
+    - find . -exec touch -t 201401010000 {} \;
+    - for x in $(git ls-tree --full-tree --name-only -r HEAD); do touch -t $(date -d "$(git log -1 --format=%ci "${x}")" +%y%m%d%H%M.%S) "${x}"; done
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - mkdir -p ~/docker
+    - if [[ -e ~/docker/gemserver.tar ]]; then docker load -i ~/docker/gemserver.tar; fi
+    - docker build -t pocketplaylab/gemserver:latest .
+    - docker save "pocketplaylab/gemserver:latest" > ~/docker/gemserver.tar
+
+database:
+  override:
+    - echo "no DB"
+
+test:
+  override:
+    - echo "no tests"
+
+deployment:
+  hub: 
+    branch: development
+    commands:
+      - sed "s/<EMAIL>/$DOCKER_EMAIL/;s/<AUTH>/$DOCKER_AUTH/" dockercfg.template > ~/.dockercfg
+      - docker push pocketplaylab/gemserver:latest
+      - ./deploy_test.sh :
+          timeout: 600
