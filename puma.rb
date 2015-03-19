@@ -2,6 +2,6 @@
 
 workers 1
 daemonize
-Port ENV['PORT']
+port ENV['PORT']
 preload_app!
 
