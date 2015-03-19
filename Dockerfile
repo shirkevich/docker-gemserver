@@ -1,9 +1,6 @@
 FROM ruby:latest
 MAINTAINER Charles Martinot <charles@playlab.com>
 
-ENV USERNAME foo
-ENV PASSWORD bar
-
 RUN mkdir /var/gems
 RUN mkdir /geminabox
 
