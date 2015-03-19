@@ -27,9 +27,9 @@ test:
 
 deployment:
   hub: 
-    branch: development
+    branch: master
     commands:
       - sed "s/<EMAIL>/$DOCKER_EMAIL/;s/<AUTH>/$DOCKER_AUTH/" dockercfg.template > ~/.dockercfg
       - docker push pocketplaylab/gemserver:latest
-      - ./deploy_test.sh :
+      - ./deploy.sh :
           timeout: 600
