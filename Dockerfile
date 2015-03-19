@@ -15,4 +15,5 @@ ADD config.ru ./geminabox/
 ADD puma.rb ./geminabox/
 
 ENV PORT 6444
+EXPOSE 6444
 CMD ["bundle", "exec", "puma", "-C", "/geminabox/puma.rb"]
