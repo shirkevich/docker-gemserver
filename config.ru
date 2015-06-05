@@ -3,10 +3,6 @@ require "rubygems"
 require "geminabox"
 
 Geminabox.data = "/var/gems"
+Geminabox.rubygems_proxy = true
 
-if ENV['USERNAME'] && ENV['PASSWORD']
-  use Rack::Auth::Basic do |username, password|
-    username == ENV['USERNAME'] && password == ENV['PASSWORD']
-  end
-end
 run Geminabox::Server
